@@ -216,11 +216,11 @@ mainbouncer(void *arg)
 	fprintf(stderr,"\n=== calling \"%s\" main() ===\n\n", progname);
 
 	/* initialize cnics */
-	rump_cnic_init(rr->rr_argc, rr->rr_argv);
+	bmk_printf("Skipping cnic initialization\n");
+	//rump_cnic_init(rr->rr_argc, rr->rr_argv);
 
-	/* If VM0 run fs test into VM1 then block indefinitily, don't run main application */
 	if (rump_vmid == 0) {
-		bmk_printf("\n ##### blocking VM0 in mainbouncer. Switching to userspace ##### \n\n");
+		bmk_printf("\n************ BLOCKING KERNEL IN MAINBOUNCER. SWITCHING TO USERSPACE ************\n\n");
 		cos_thd_switch(vm_main_thd);
 		bmk_sched_blockprepare();
 		bmk_sched_block();

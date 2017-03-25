@@ -798,7 +798,9 @@ bmk_sched_startmain(void (*mainfun)(void *), void *arg)
 	 */
 	TAILQ_REMOVE(&runq, mainthread, bt_schedq);
 	setflags(mainthread, THR_RUNNING, THR_RUNQ);
+	bmk_printf("Switching to main thread\n");
 	sched_switch(&initthread, mainthread);
+	bmk_printf("Switched out of booting, need to go resume\n");
 
 	/*
 	 * We return here when composite schedules our RK
