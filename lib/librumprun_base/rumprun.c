@@ -112,7 +112,11 @@ rumprun_boot(char *cmdline)
 
 	rump_init_server("tcp://0:12345");
 
+	fprintf(stderr, "running _rumprun_config with cmdline: %s\n", cmdline);
+	cmdline = "{,\"net\":{,\"if\":\"wm0\",\"type\":\"inet\",\"method\":\"static\",\"addr\":\"192.168.0.2\",\"mask\":\"24\",},\"cmdline\":\"paws.bin\",},\0";
+	fprintf(stderr, "overwritting cmdline to: %s\n", cmdline);
 	_rumprun_config(cmdline);
+	fprintf(stderr, "returning from _rumprun_config\n");
 
 	/*
 	 * give all threads a chance to run, and ensure that the main

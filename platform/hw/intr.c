@@ -136,6 +136,7 @@ bmk_isr_init(int (*func)(void *), void *arg, int intr)
 	return 0;
 }
 
+
 void
 bmk_isr(int which)
 {

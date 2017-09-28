@@ -27,6 +27,7 @@
 #include <bmk/kernel.h>
 
 #include <bmk-core/pgalloc.h>
+#include <bmk-core/printf.h>
 
 #include "pci_user.h"
 
@@ -93,6 +94,8 @@ void *
 rumpcomp_pci_irq_establish(unsigned cookie, int (*handler)(void *), void *data)
 {
 
+	bmk_printf("rumpcomp_pci_irq_establish, cookie: %d, handler: %p, data: %p\n",
+			cookie, handler, data);
 	if (bmk_isr_init(handler, data, intrs[cookie]) == 0)
 		return &intrs[cookie];
 	else

@@ -185,6 +185,7 @@ ENTRY(bmk_x86_isr_##intnum)						\
 	iret								;\
 END(bmk_x86_isr_##intnum)
 
+INTRSTUB(5)
 INTRSTUB(9)
 INTRSTUB(10)
 INTRSTUB(11)

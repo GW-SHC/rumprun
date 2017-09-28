@@ -25,6 +25,7 @@
 
 #include <bmk/kernel.h>
 
+void bmk_x86_isr_5(void);
 void bmk_x86_isr_9(void);
 void bmk_x86_isr_10(void);
 void bmk_x86_isr_11(void);
@@ -32,17 +33,19 @@ void bmk_x86_isr_14(void);
 void bmk_x86_isr_15(void);
 
 int pic2mask = 0xff;
+int pic1mask = 0;
 
 int
 bmk_cpu_intr_init(int intr)
 {
 
 	/* XXX: too lazy to keep PIC1 state */
-	if (intr < 8)
+	if (intr != 5 && intr < 8)
 		return BMK_EGENERIC;
 
 #define FILLGATE(n) case n: bmk_x86_fillgate(32+n, bmk_x86_isr_##n, 0); break
 	switch (intr) {
+		FILLGATE(5);
 		FILLGATE(9);
 		FILLGATE(10);
 		FILLGATE(11);
@@ -53,9 +56,16 @@ bmk_cpu_intr_init(int intr)
 	}
 #undef FILLGATE
 
-	/* unmask interrupt in PIC */
-	pic2mask &= ~(1<<(intr-8));
-	outb(PIC2_DATA, pic2mask);
+	if (intr < 8) {
+		/* unmask interrupt in PIC1 */
+		if (pic1mask == 0) pic1mask = inb(PIC1_DATA);
+		pic1mask &= ~(1<<intr);
+		outb(PIC1_DATA, pic1mask);
+	} else {
+		/* unmask interrupt in PIC */
+		pic2mask &= ~(1<<(intr-8));
+		outb(PIC2_DATA, pic2mask);
+	}
 
 	return 0;
 }

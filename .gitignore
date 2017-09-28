@@ -1,6 +1,11 @@
 *~
 *.o
 obj
+*helloer*
+udp_client
+
+app-tools/
+lib/
 
 platform/*/img/*.ffs
 rump
